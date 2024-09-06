@@ -170,7 +170,7 @@ def run(command, working_directory):
         return  [x for x in new_file_list if x not in old_file_list]
     except subprocess.CalledProcessError as e:
         logging.error(f"'{e.cmd}' exited with the return code {e.returncode}")
-        process_output(e, working_directory, error=True)
+        process_output(e, working_directory, log_output=True)
         raise
     except FileNotFoundError as e:
         logging.error(e)
