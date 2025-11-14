@@ -1,4 +1,5 @@
-FROM ghcr.io/pism/pism:9c1679b AS runtime
+ARG PISM_TAG=9c1679b
+FROM ghcr.io/pism/pism:${PISM_TAG} AS runtime
 
 FROM runtime AS build
 ARG DEBIAN_FRONTEND=noninteractive
