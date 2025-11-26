@@ -2,9 +2,14 @@ name: Build the PISM-Cloud container and push to GHCR
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - 'container/**'
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - release
 
 env:
   REGISTRY: ghcr.io
@@ -47,7 +52,6 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ca052bb54ab0790a636c9b5f226502c73d547a25 # v5.4.0
         with:
-          context: container/
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
