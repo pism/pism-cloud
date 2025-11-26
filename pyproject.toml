@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pism-cloud"
+maintainers = [
+    {name = "Andy Aschwanden", email = "andy.aschwanden@gmail.com"},
+    {name = "Constantine Khrulev", email = "ckhroulev@alaska.edu"},
+    {name = "Joseph H. kennedy", email = "me@jhkennedy.org"},
+]
+description = """PISM Cloud"""
+readme = "README.md"
+requires-python = ">=3.12"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+]
+dependencies = []
+dynamic = ["version"]
+
+# [project.optional-dependencies]
+# develop = []
+
+[project.scripts]
+pism-cloud-execute = "pism_cloud.execute:main"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools_scm]

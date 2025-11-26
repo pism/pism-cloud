@@ -61,6 +61,36 @@ EOF
 
 FROM runtime
 
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends git curl ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /opt/peak_memusage/ /opt/peak_memusage
 
+RUN chown -R worker /opt/
+
+USER worker
+WORKDIR /home/worker
+
 ENV PATH=/opt/peak_memusage/bin:$PATH
+
+RUN curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
+    bash Miniforge3-$(uname)-$(uname -m).sh -b -p /opt/conda && \
+    rm Miniforge3-$(uname)-$(uname -m).sh
+
+ENV PATH=/opt/conda/bin:$PATH
+SHELL ["/bin/bash", "-l", "-c"]
+
+COPY --chown=worker . /pism-cloud/
+
+RUN mamba env create -f /pism-cloud/environment.yml && \
+    conda clean -afy && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> /home/worker/.profile && \
+    echo "conda activate pism-cloud" >> /home/worker/.profile
+
+RUN conda activate pism-cloud && \
+    python -m pip install --no-cache-dir /pism-cloud
+
+ENTRYPOINT ["/pism-cloud/pism_cloud/etc/entrypoint.sh"]
+CMD ["-h"]
