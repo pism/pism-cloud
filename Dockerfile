@@ -92,5 +92,5 @@ RUN mamba env create -f /pism-cloud/environment.yml && \
 RUN conda activate pism-cloud && \
     python -m pip install --no-cache-dir /pism-cloud
 
-ENTRYPOINT ["/pism-cloud/pism_cloud/etc/entrypoint.sh"]
+ENTRYPOINT ["/pism-cloud/src/pism_cloud/etc/entrypoint.sh"]
 CMD ["-h"]
