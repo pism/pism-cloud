@@ -36,6 +36,6 @@ zip-safe = false
 
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 
 [tool.setuptools_scm]
