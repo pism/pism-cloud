@@ -6,6 +6,15 @@ from pathlib import Path
 from pism_cloud.aws import local_to_s3, s3_to_local
 
 
+def ensure_directories_exist(work_dir: Path):
+    (work_dir /'input').mkdir(parents=True, exist_ok=True)
+    (work_dir / 'logs').mkdir(parents=True, exist_ok=True)
+    (work_dir / 'output' / 'post_processing').mkdir(parents=True, exist_ok=True)
+    (work_dir / 'output' / 'spatial').mkdir(parents=True, exist_ok=True)
+    (work_dir / 'output' / 'state').mkdir(parents=True, exist_ok=True)
+    (work_dir / 'run_scripts').mkdir(parents=True, exist_ok=True)
+
+
 def execute(work_dir: Path = Path.cwd()):
     for run_script in work_dir.glob('**/run_scripts/*.sh'):
         subprocess.run(
@@ -39,10 +48,13 @@ def main():
     args = parser.parse_args()
 
     # FIXME: `args.workdir` / `data` shouldn't be necessary and is an artifact of pism-terra; fix there
-    if args.bucket:
-        s3_to_local(args.bucket, args.bucket_prefix, args.work_dir / 'data')
-
-    execute(work_dir=args.work_dir)
+    work_dir = args.work_dir / 'data'
 
     if args.bucket:
-        local_to_s3(args.work_dir / 'data', args.bucket, args.bucket_prefix)
+        s3_to_local(args.bucket, args.bucket_prefix, work_dir)
+        ensure_directories_exist(work_dir)
+
+    execute(work_dir=work_dir)
+
+    if args.bucket:
+        local_to_s3(work_dir, args.bucket, args.bucket_prefix)
