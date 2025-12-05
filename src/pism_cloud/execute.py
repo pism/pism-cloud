@@ -39,19 +39,25 @@ def main():
         default="",
     )
     parser.add_argument(
-        "--work-dir",
-        help="Working directory.",
+        "--run-dir",
+        help="Directory to execute PISM runs from. If you've provided `--bucket` and `--bucket-prefix`, "
+             "this will likely be a folder within `f's3://{bucket}/{bucket_prefix}/'`.",
         default=Path.cwd(),
         type=Path,
     )
 
     args = parser.parse_args()
 
-    if args.bucket:
-        s3_to_local(args.bucket, args.bucket_prefix, args.work_dir)
-        ensure_directories_exist(args.work_dir)
-
-    execute(work_dir=args.work_dir)
+    work_dir = Path.cwd()
 
     if args.bucket:
-        local_to_s3(args.work_dir, args.bucket, args.bucket_prefix)
+        work_dir /= args.bucket_prefix
+        s3_to_local(args.bucket, args.bucket_prefix, work_dir)
+
+    run_dir = work_dir / args.run_dir
+    ensure_directories_exist(run_dir)
+
+    execute(work_dir=run_dir)
+
+    if args.bucket:
+        local_to_s3(work_dir, args.bucket, args.bucket_prefix)
