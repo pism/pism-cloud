@@ -47,14 +47,11 @@ def main():
 
     args = parser.parse_args()
 
-    # FIXME: `args.workdir` / `data` shouldn't be necessary and is an artifact of pism-terra; fix there
-    work_dir = args.work_dir / 'data'
+    if args.bucket:
+        s3_to_local(args.bucket, args.bucket_prefix, args.work_dir)
+        ensure_directories_exist(args.work_dir)
+
+    execute(work_dir=args.work_dir)
 
     if args.bucket:
-        s3_to_local(args.bucket, args.bucket_prefix, work_dir)
-        ensure_directories_exist(work_dir)
-
-    execute(work_dir=work_dir)
-
-    if args.bucket:
-        local_to_s3(work_dir, args.bucket, args.bucket_prefix)
+        local_to_s3(args.work_dir, args.bucket, args.bucket_prefix)
