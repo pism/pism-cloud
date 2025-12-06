@@ -1,0 +1,9 @@
+name: pism-cloud
+channels:
+  - conda-forge
+dependencies:
+  - python>=3.12
+  - pip
+  - setuptools_scm
+  - boto3
+  - botocore
