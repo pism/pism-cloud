@@ -51,7 +51,8 @@ def main():
     work_dir = Path.cwd()
 
     if args.bucket:
-        work_dir /= args.bucket_prefix
+        # FIXME: pism-terra produces hard-coded absolute paths, so things _must_ end up in ${HOME}/data
+        work_dir /= 'data'
         s3_to_local(args.bucket, args.bucket_prefix, work_dir)
 
     run_dir = work_dir / args.run_dir
