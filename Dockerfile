@@ -1,4 +1,5 @@
-ARG PISM_TAG=9c1679b
+# FIXME: better tag
+ARG PISM_TAG=cloud-test
 FROM ghcr.io/pism/pism:${PISM_TAG} AS runtime
 
 FROM runtime AS build
