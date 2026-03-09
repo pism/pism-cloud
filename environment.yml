@@ -5,5 +5,6 @@ dependencies:
   - python
   - geopandas
   - hyp3_sdk
+  - pyogrio
   - pyarrow
   - s3fs
