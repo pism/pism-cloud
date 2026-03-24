@@ -7,3 +7,4 @@ dependencies:
   - hyp3_sdk
   - pyarrow
   - s3fs
+  - jupyter
