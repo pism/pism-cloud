@@ -1,0 +1,10 @@
+name: pism-cloud
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - geopandas
+  - hyp3_sdk
+  - pyarrow
+  - s3fs
+  - jupyter
