@@ -1,4 +1,2 @@
 # pism-cloud
-
-
 PISM Cloud
