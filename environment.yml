@@ -8,3 +8,10 @@ dependencies:
   - pyarrow
   - s3fs
   - jupyter
+  - toml
+  - xarray
+  - matplotlib
+  - h5netcdf
+  - h5py
+  - netcdf4
+  - dask[distributed]
